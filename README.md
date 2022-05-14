@@ -1,2 +1,2 @@
-# fomik-material-ui
+# formik-material-ui
 React - Formik - Material UI Form

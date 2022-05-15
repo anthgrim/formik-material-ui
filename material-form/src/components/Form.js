@@ -1,4 +1,4 @@
-import React from "react"
+import {React, useState } from "react"
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ref } from "yup"
@@ -8,21 +8,21 @@ const Form = () => {
     //Validation Schema with Yup
     const validationSchema = yup.object({
         firstName: yup
-            .string("Enter your first name")
+            .string()
             .required("First name is required"),
         lastName: yup
-            .string("Enter your last name")
+            .string()
             .required("Last name is required"),
         email: yup
-            .string("Enter your email")
+            .string()
             .email("Enter a valid email")
             .required("Email is required"),
         password: yup
-            .string("Enter your password")
+            .string()
             .min(10,"Password should be at least 10 chars long")
             .required("Password is required"),
         confirm_password: yup
-            .string("Please confirm the password")
+            .string()
             .required("Password confirmation is required")
             .oneOf([ref("password")], "Passwords do not match")
         
@@ -45,6 +45,12 @@ const Form = () => {
             alert("Login Succesful")
         }
     })
+
+    const [passwordVisibility, setPasswordVisibility] = useState(true)
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisibility(prevState => !prevState)
+    }
 
     return (
         <>
@@ -93,6 +99,8 @@ const Form = () => {
                         id="password"
                         name="password"
                         label="Password"
+                        type={passwordVisibility ? "text" : "password"}
+                        onDoubleClick={togglePasswordVisibility}
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
@@ -106,6 +114,8 @@ const Form = () => {
                         id="confirm_password"
                         name="confirm_password"
                         label="Confirm Password"
+                        type={passwordVisibility ? "text" : "password"}
+                        onDoubleClick={togglePasswordVisibility}
                         value={formik.values.confirm_password}
                         onChange={formik.handleChange}
                         error={formik.touched.confirm_password && Boolean(formik.errors.confirm_password)}
